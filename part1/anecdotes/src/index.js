@@ -1,6 +1,18 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const PopularAnecdote = ({anecdotes, votes}) => {
+  let mostVotes = votes.indexOf(Math.max(...votes));
+
+  return (
+    <div>
+      <h1>Anecdote with most votes</h1>
+      most votes - {anecdotes[mostVotes]}
+      <div>has {votes[mostVotes]} votes</div>
+    </div>
+  );
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array.apply(null, new Array(props.anecdotes.length)).map(Number.prototype.valueOf,0));
@@ -21,6 +33,7 @@ const App = (props) => {
         vote
       </button>
       <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>next anecdote</button>
+      <PopularAnecdote votes={votes} anecdotes={anecdotes}/>
     </div>
   )
 }
