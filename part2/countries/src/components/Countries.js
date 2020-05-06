@@ -13,6 +13,7 @@ const Countries = ({filterCountries, setDisplayCountry, displayCountry}) => {
     }
 
     if (filterCountries.length === 1) {
+      setDisplayCountry(filterCountries[0]);
       return <Country country={filterCountries[0]} />
     }
 

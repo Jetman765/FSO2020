@@ -27,6 +27,7 @@ const App = () => {
 
   return (
     <div>
+      DIPLAY COUNTRY: {displayCountry.name}
       <h1>Countries</h1>
       <Filter filterName={filterName} handleFilterNameChange={handleFilterNameChange} />
       <Countries filterCountries={filterCountries} displayCountry={displayCountry} setDisplayCountry={setDisplayCountry} /> 
