@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import phonebook from './services/phonebook';
 import Filter from './components/Filter'
 import Form from './components/Form'
 import Results from './components/Results'
@@ -11,16 +11,13 @@ const App = () => {
   const [ filterName, setFilterName ] = useState('');
   const [ filterResults, setFilterResults ] = useState([]);
 
-  const hook = () => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-    })
-  }
-
-  useEffect(hook, [])
+  useEffect(() => {
+    phonebook
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
+      })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -30,8 +27,24 @@ const App = () => {
     }
     persons.filter(person => person.name === newName).length > 0
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat(newPerson));
+      : phonebook.addPerson(newPerson)
+          .then(newPerson => {
+            setPersons(persons.concat(newPerson))
+          })
     setNewName('');
+  }
+
+  const deletePerson = ({name, id}) => {
+    phonebook.deletePerson({name,id})
+      .then(resp => {
+        if (resp === "200") {
+          setPersons(persons.map(person => person.id !== id))
+        }
+      })
+    // console.log('deleted person')
+    // phonebook.getAll()
+    // .then(persons => setPersons(persons))
+    // console.log('ran get all')
   }
 
   const handleNewName = (event) => {
@@ -59,7 +72,7 @@ const App = () => {
         handleNewName={handleNewName} handleNewNumber={handleNewNumber} 
       />
       <h3>Numbers</h3>
-      <Results persons={persons} filterResults={filterResults} />
+      <Results persons={persons} filterResults={filterResults} deletePerson={deletePerson} />
     </div>
   )
 }
