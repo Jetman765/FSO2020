@@ -26,12 +26,26 @@ const App = () => {
       number: newNumber
     }
     persons.filter(person => person.name === newName).length > 0
-      ? alert(`${newName} is already added to phonebook`)
+      ? updateNumber(newName, newNumber)
       : phonebook.addPerson(newPerson)
           .then(newPerson => {
             setPersons(persons.concat(newPerson))
           })
     setNewName('');
+    setNewNumber('');
+  }
+
+  const updateNumber = (name, number) => {
+    alert(`${newName} is already added to phonebook, replace the old number with new one?`)
+    const entry = persons.find(person => person.name === name);
+    const updatedEntry = {...entry, number: number};
+
+    phonebook.updatePerson(updatedEntry)
+      .then(resp => 
+        setPersons(persons.map(person => {
+        if (person.id !== updatedEntry.id) return person
+        return resp
+      })));
   }
 
   const deletePerson = ({name, id}) => {
