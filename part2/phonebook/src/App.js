@@ -36,15 +36,13 @@ const App = () => {
 
   const deletePerson = ({name, id}) => {
     phonebook.deletePerson({name,id})
-      .then(resp => {
-        if (resp === "200") {
-          setPersons(persons.map(person => person.id !== id))
-        }
-      })
-    // console.log('deleted person')
-    // phonebook.getAll()
-    // .then(persons => setPersons(persons))
-    // console.log('ran get all')
+    
+    setTimeout(() => {
+      phonebook
+      .getAll()
+      .then(persons => setPersons(persons))
+    }, (100));
+    
   }
 
   const handleNewName = (event) => {

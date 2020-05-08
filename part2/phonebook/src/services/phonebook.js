@@ -14,7 +14,7 @@ const addPerson = newPerson => {
 const deletePerson = ({name, id}) => {
   window.confirm(`Delete ${name}?`);
   const req = axios.delete(`${baseUrl}/${id}`);
-  return req.then(resp => resp.status);
+  return req.then(resp => console.log(resp));
 }
 
 export default { getAll, addPerson, deletePerson }
